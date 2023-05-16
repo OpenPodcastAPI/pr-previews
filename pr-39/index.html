@@ -1,0 +1,338 @@
+<!doctype html>
+<html class="no-js" lang="en">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Subscriptions" href="subscriptions/index.html" />
+
+    <!-- Generated with Sphinx 5.3.0 and Furo 2022.12.07 -->
+        <title>Open Podcast API specification documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=91d0f0d1c444bdcb17a68e833c7a53903343c195" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="#"><div class="brand">Open Podcast API specification  documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="#">
+  
+  
+  <span class="sidebar-brand-text">Open Podcast API specification  documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">📚 Specs</span></p>
+<ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="subscriptions/index.html">Subscriptions</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="subscriptions/add-new.html">Add a new subscription</a></li>
+<li class="toctree-l2"><a class="reference internal" href="subscriptions/get-all.html">Get all subscriptions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="subscriptions/get-single.html">Get a single subscription</a></li>
+<li class="toctree-l2"><a class="reference internal" href="subscriptions/update.html">Update a subscription</a></li>
+<li class="toctree-l2"><a class="reference internal" href="subscriptions/delete.html">Delete a subscription</a></li>
+<li class="toctree-l2"><a class="reference internal" href="subscriptions/status.html">Deletion status endpoint</a></li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="edit-this-page">
+  <a class="muted-link" href="https://github.com/OpenPodcastAPI/api-specs/edit/main/docs/index.md" title="Edit this page">
+    <svg aria-hidden="true" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <path d="M4 20h4l10.5 -10.5a1.5 1.5 0 0 0 -4 -4l-10.5 10.5v4" />
+      <line x1="13.5" y1="6.5" x2="17.5" y2="10.5" />
+    </svg>
+    <span class="visually-hidden">Edit this page</span>
+  </a>
+</div><div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <section id="open-podcast-api">
+<h1>Open Podcast API<a class="headerlink" href="#open-podcast-api" title="Permalink to this heading">#</a></h1>
+<p>Welcome! The Open Podcast API is an initiative aiming to provide a feature-complete synchronisation API specification for podcast (web) apps and user-focussed servers.</p>
+<p>Our goal indirectly serving end-users: providing an easy way to sync subscriptions, listening progress, favourites, queu(s) and more between different apps and online services, and the ability to switch providers without hassle. Our goal for developers: providing reliable, open specifications which are decentralisation-ready and are easy to implement. To reach these goals we’re deveveloping these specs in a collaborative way and sharing them in an <a class="reference external" href="https://spec.openapis.org/oas/latest">OpenAPI</a> format.</p>
+<section id="supported-feature-set-while-specs-are-in-progress">
+<h2>Supported feature set while specs are ‘in progress’<a class="headerlink" href="#supported-feature-set-while-specs-are-in-progress" title="Permalink to this heading">#</a></h2>
+<p>Currently the specifications to synchronise <a class="reference internal" href="subscriptions/index.html"><span class="std std-doc">subscriptions</span></a> has been made available.</p>
+<p>We encourage all projects offering podcast listening and/or synchronisation functionality to adopt and implement defined specifications. However, please note that the <strong>specifications are currently in ‘in progress’</strong>: breaking changes might occur as initial implementation of these specs might reveal flaws in our theory.</p>
+<p>First next on the roadmap are specifications for authentication and basic episode status synchronisation.</p>
+</section>
+<section id="minimally-required-and-optional-functionality">
+<h2>Minimally required and optional functionality<a class="headerlink" href="#minimally-required-and-optional-functionality" title="Permalink to this heading">#</a></h2>
+<p>In order to ensure a smooth and consistent end-user experience, we will identify a set of ‘minimally required’ end-points and calls.</p>
+<p><em>Core</em>: End-points and calls which are needed to support functionality we expect every user-facing (web) application to offer. All the end-points and calls labelled as such should be supported by all clients and servers. A product must support these in full in order for it to be called ‘Open Podcast API compatible’.</p>
+<p><em>Optional</em>: All other end-points and calls. The whole (of the API integration between clients/servers) should be fully functional with (some of) these parts being absent.</p>
+<p>What is labelled as ‘core’ is determined as we develop the specification. They may but are unlikely to change.</p>
+</section>
+<section id="background">
+<h2>Background<a class="headerlink" href="#background" title="Permalink to this heading">#</a></h2>
+<p>The specification is inspired by and builds on the API of <a class="reference external" href="https://gpoddernet.readthedocs.io/en/latest/api/index.html">gPodder.net</a>. Summer 2019 the original creator announced that they would step down and the community took over.<a class="footnote-reference brackets" href="#gpoddermaintainer" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a> Unfortunately, about a year later the project evolved in to ‘basic maintenance mode’ due to shifting priorities of key contributors. The limited availability of volunteers combined with gPodder.net’s popularity among end-users meant that people started to see server errors while synchronising or creating an account.<a class="footnote-reference brackets" href="#apforumgpodderissues" id="id2" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a> <a class="footnote-reference brackets" href="#gpodder50x" id="id3" role="doc-noteref"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></a> Attempts to establish contact and collaborate on improving the situation didn’t work out as hoped. Given the situation, AntennaPod contributors started discussing whether gPodder.net support should be removed<a class="footnote-reference brackets" href="#apforumgpodderremoval" id="id4" role="doc-noteref"><span class="fn-bracket">[</span>4<span class="fn-bracket">]</span></a> or whether it could be forked.</p>
+<p>It was concluded that it would be best to initiate something outside a single project; to create a new API spec with a wider coalition. That would allow users to switch servers (avoiding major loads on a single server or project), provide an opportunity to more easily go beyond the existing gPodder.net API specs and enable developers to address some technical issues with the API specs. Initial discussions on GitHub lead to a meeting on October 2022 with folks from <a class="reference external" href="https://github.com/AntennaPod/AntennaPod/">AntennaPod</a>, <a class="reference external" href="https://dev.funkwhale.audio/">Funkwhale</a>, <a class="reference external" href="https://invent.kde.org/multimedia/kasts">Kasts</a>, <a class="reference external" href="https://github.com/MartinMouritzen/Podfriend">Podfriend</a> and the <a class="reference external" href="https://github.com/thrillfall/nextcloud-gpodder">gPodder app for Nextcloud</a>.<a class="footnote-reference brackets" href="#initialapidiscussions" id="id5" role="doc-noteref"><span class="fn-bracket">[</span>5<span class="fn-bracket">]</span></a> A few months later, the first of the recurring meetings took place to start developing the specification.</p>
+</section>
+<section id="specification-development-join-the-conversation">
+<h2>Specification development: join the conversation!<a class="headerlink" href="#specification-development-join-the-conversation" title="Permalink to this heading">#</a></h2>
+<p>The Open Podcast API initiative builds on open source and open standards. Contributors from different projects work in the open to develop the specifications. All projects and products, from open source to proprietary, are encouraged to join us in developing the specs. Only then we can ensure we work towards the aim of a set of interoperable specs.</p>
+<p><a class="reference external" href="https://matrix.to/#/!ZHdcrdWSgxXRREuJdU:matrix.org">Join the chatroom on Matrix</a> | <a class="reference external" href="https://github.com/orgs/OpenPodcastAPI/discussions/categories/problem-definitions-solutions">Give input in our GitHub discussions</a> | <a class="reference external" href="https://github.com/orgs/OpenPodcastAPI/discussions/15">Add our monthly meeting to your calendar</a></p>
+<hr class="footnotes docutils" />
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="gpoddermaintainer" role="note">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
+<p><a class="reference external" href="https://github.com/gpodder/mygpo/blob/81e3d13e00e6c3d6db7ee6a22734041bf6fde128/maintainer-needed.md">Call on the gPodder.net repository for a new maintainer</a></p>
+</aside>
+<aside class="footnote brackets" id="apforumgpodderissues" role="note">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">2</a><span class="fn-bracket">]</span></span>
+<p><a class="reference external" href="https://forum.antennapod.org/t/problem-with-gpodder-net/374">Questions about gPodder.net issues on the AntennaPod forum</a></p>
+</aside>
+<aside class="footnote brackets" id="gpodder50x" role="note">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id3">3</a><span class="fn-bracket">]</span></span>
+<p><a class="reference external" href="https://github.com/gpodder/mygpo/issues/527">Issue in the gPodder.net repository on 502 errors</a></p>
+</aside>
+<aside class="footnote brackets" id="apforumgpodderremoval" role="note">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id4">4</a><span class="fn-bracket">]</span></span>
+<p><a class="reference external" href="https://forum.antennapod.org/t/should-gpodder-net-be-supported-long-term/396">Suggestion on the AntennaPod forum to remove gPodder.net support</a></p>
+</aside>
+<aside class="footnote brackets" id="initialapidiscussions" role="note">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id5">5</a><span class="fn-bracket">]</span></span>
+<p><a class="reference external" href="https://github.com/thrillfall/nextcloud-gpodder/discussions/91">Initial discussions on the needs for a new podcast synchronisation API</a></p>
+</aside>
+</aside>
+</section>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="subscriptions/index.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">Subscriptions</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2023, Open Podcast API team
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Open Podcast API</a><ul>
+<li><a class="reference internal" href="#supported-feature-set-while-specs-are-in-progress">Supported feature set while specs are ‘in progress’</a></li>
+<li><a class="reference internal" href="#minimally-required-and-optional-functionality">Minimally required and optional functionality</a></li>
+<li><a class="reference internal" href="#background">Background</a></li>
+<li><a class="reference internal" href="#specification-development-join-the-conversation">Specification development: join the conversation!</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/scripts/furo.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/design-tabs.js"></script>
+    </body>
+</html>
