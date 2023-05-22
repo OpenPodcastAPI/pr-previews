@@ -259,6 +259,11 @@
 <td><p>No</p></td>
 <td><p>The new GUID associated with the podcast</p></td>
 </tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">deleted</span></code></p></td>
+<td><p>Datetime</p></td>
+<td><p>No</p></td>
+<td><p>The date on which the subscription was deleted. Only returned if the field is not <code class="docutils literal notranslate"><span class="pre">NULL</span></code></p></td>
+</tr>
 </tbody>
 </table>
 </div>
@@ -276,12 +281,16 @@
 <p>This ensures the client has the most up-to-date entry for the subscription.</p>
 <div class="mermaid">
             flowchart TD
-   request([The client requests information about a subscription]) --&gt; new_guid{Is the new_guid field populated?}
-   subgraph process [For each subscription]
-      new_guid --&gt;|yes| follow(The server fetches the entry containing the\n new guid entry) --&gt; new_guid
-      new_guid --&gt;|no| return([The server returns the &lt;code&gt;guid&lt;/code&gt; from the request path and adds the latest\nGUID in the &lt;code&gt;new_guid&lt;/code&gt; field])
-   end
+request([The client requests information about a subscription]) --&gt; new_guid{Is the new_guid field populated?}
+subgraph process [For each subscription]
+new_guid --&gt;|yes| follow(The server fetches the entry containing the\n new guid entry) --&gt; new_guid
+new_guid --&gt;|no| return([The server returns the &lt;code&gt;guid&lt;/code&gt; from the request path and adds the latest\nGUID in the &lt;code&gt;new_guid&lt;/code&gt; field])
+end
         </div></section>
+<section id="client-behavior">
+<h2>Client behavior<a class="headerlink" href="#client-behavior" title="Permalink to this heading">#</a></h2>
+<p>The client should update its local subscription data to match the information returned in the response. On receipt of a deleted subscription, the client should present the user with the option to remove their local data or <a class="reference internal" href="add-new.html"><span class="std std-doc">send their local data to the server</span></a> to reinstate the subscription details.</p>
+</section>
 <section id="example-request">
 <h2>Example request<a class="headerlink" href="#example-request" title="Permalink to this heading">#</a></h2>
 <div class="sd-tab-set docutils">
@@ -312,9 +321,9 @@ XML</label><div class="sd-tab-content docutils">
 </input><label class="sd-tab-label" data-sync-id="tabcode-json" for="sd-tab-item-2">
 JSON</label><div class="sd-tab-content docutils">
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-<span class="w">  </span><span class="nt">&quot;feed_url&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;https://example.com/feed2&quot;</span><span class="p">,</span>
-<span class="w">  </span><span class="nt">&quot;guid&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;968cb508-803c-493c-8ff2-9e397dadb83c&quot;</span><span class="p">,</span>
-<span class="w">  </span><span class="nt">&quot;is_subscribed&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
+<span class="w">   </span><span class="nt">&quot;feed_url&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;https://example.com/feed2&quot;</span><span class="p">,</span>
+<span class="w">   </span><span class="nt">&quot;guid&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;968cb508-803c-493c-8ff2-9e397dadb83c&quot;</span><span class="p">,</span>
+<span class="w">   </span><span class="nt">&quot;is_subscribed&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
 <span class="p">}</span>
 </pre></div>
 </div>
@@ -341,8 +350,8 @@ XML</label><div class="sd-tab-content docutils">
 </input><label class="sd-tab-label" data-sync-id="tabcode-json" for="sd-tab-item-4">
 JSON</label><div class="sd-tab-content docutils">
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-<span class="w">  </span><span class="nt">&quot;code&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">410</span><span class="p">,</span>
-<span class="w">  </span><span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Subscription has been deleted&quot;</span>
+<span class="w">   </span><span class="nt">&quot;code&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">410</span><span class="p">,</span>
+<span class="w">   </span><span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Subscription has been deleted&quot;</span>
 <span class="p">}</span>
 </pre></div>
 </div>
@@ -420,6 +429,7 @@ XML</label><div class="sd-tab-content docutils">
 <li><a class="reference internal" href="#">Get a single subscription</a><ul>
 <li><a class="reference internal" href="#parameters">Parameters</a></li>
 <li><a class="reference internal" href="#server-side-behavior">Server-side behavior</a></li>
+<li><a class="reference internal" href="#client-behavior">Client behavior</a></li>
 <li><a class="reference internal" href="#example-request">Example request</a></li>
 <li><a class="reference internal" href="#example-200-response">Example 200 response</a></li>
 <li><a class="reference internal" href="#example-410-response">Example 410 response</a></li>

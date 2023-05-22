@@ -314,18 +314,18 @@ JSON</label><div class="sd-tab-content docutils">
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
 <span class="w">   </span><span class="nt">&quot;subscriptions&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
 <span class="w">      </span><span class="p">{</span>
-<span class="w">         </span><span class="nt">&quot;feed_url&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;https://example.com/rss1&quot;</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;feed_url&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;https://example.com/rss1&quot;</span>
 <span class="w">      </span><span class="p">},</span>
 <span class="w">      </span><span class="p">{</span>
-<span class="w">         </span><span class="nt">&quot;feed_url&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;https://example.com/rss2&quot;</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;feed_url&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;https://example.com/rss2&quot;</span>
 <span class="w">      </span><span class="p">},</span>
 <span class="w">      </span><span class="p">{</span>
-<span class="w">         </span><span class="nt">&quot;feed_url&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;https://example.com/rss3&quot;</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;feed_url&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;https://example.com/rss3&quot;</span>
 <span class="w">      </span><span class="p">},</span>
 <span class="w">      </span><span class="p">{</span>
 <span class="w">         </span><span class="nt">&quot;feed_url&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;https://example.com/rss4&quot;</span><span class="p">,</span>
 <span class="w">         </span><span class="nt">&quot;guid&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2d8bb39b-8d34-48d4-b223-a0d01eb27d71&quot;</span>
-<span class="w">      </span><span class="p">},</span>
+<span class="w">      </span><span class="p">}</span>
 <span class="w">   </span><span class="p">]</span>
 <span class="p">}</span>
 </pre></div>
@@ -370,7 +370,7 @@ XML</label><div class="sd-tab-content docutils">
 </li>
 <li><p>Checks to see if there is an existing entry with the same <code class="docutils literal notranslate"><span class="pre">guid</span></code> or <code class="docutils literal notranslate"><span class="pre">feed_url</span></code></p>
 <ul class="simple">
-<li><p>If an existing entry is found, the server sets the <code class="docutils literal notranslate"><span class="pre">is_subscribed</span></code> field to <code class="docutils literal notranslate"><span class="pre">true</span></code> and updates the <code class="docutils literal notranslate"><span class="pre">subscription_changed</span></code> date to the current date</p></li>
+<li><p>If an existing entry is found, the server sets the <code class="docutils literal notranslate"><span class="pre">is_subscribed</span></code> field to <code class="docutils literal notranslate"><span class="pre">true</span></code> and updates the <code class="docutils literal notranslate"><span class="pre">subscription_changed</span></code> date to the current date. If the <code class="docutils literal notranslate"><span class="pre">deleted</span></code> field is populated, the field is set to <code class="docutils literal notranslate"><span class="pre">NULL</span></code> to show that the subscription is active</p></li>
 <li><p>If no existing entry is found, the server creates a new subscription entry</p></li>
 </ul>
 </li>
@@ -380,16 +380,16 @@ XML</label><div class="sd-tab-content docutils">
 </ol>
 <div class="mermaid">
             flowchart TB
-   post([The client posts a subscription payload]) --&gt; process{Does the payload contain\n a GUID?}
-   subgraph each [For each object]
-      process --&gt;|yes| store_guid(The server stores the GUID\nfor the feed)
-      process --&gt;|no| generate_guid(The server generates a GUID\nfor the feed)
-      store_guid &amp; generate_guid --&gt; search_entries[[The server checks for existing\nentries with the same URL or GUID]]
-      search_entries --&gt; found{Was an existing subscription entry found?}
-      found --&gt;|yes| resubscribe(The server updates the is_subscribed field\nto true and updates the subscription_changed date\nto the current date)
-      found --&gt;|no| create(The server creates a new subscription entry)
-   end
-   resubscribe &amp; create --&gt; return([The server returns a success payload])
+post([The client posts a subscription payload]) --&gt; process{Does the payload contain\n a GUID?}
+subgraph each [For each object]
+process --&gt;|yes| store_guid(The server stores the GUID\nfor the feed)
+process --&gt;|no| generate_guid(The server generates a GUID\nfor the feed)
+store_guid &amp; generate_guid --&gt; search_entries[[The server checks for existing\nentries with the same URL or GUID]]
+search_entries --&gt; found{Was an existing subscription entry found?}
+found --&gt;|yes| resubscribe(The server updates the is_subscribed field\nto true, updates the subscription_changed date\nto the current date and sets\nthe deleted field to NULL)
+found --&gt;|no| create(The server creates a new subscription entry)
+end
+resubscribe &amp; create --&gt; return([The server returns a success payload])
         </div><section id="subscription-guid-update">
 <h3>Subscription GUID update<a class="headerlink" href="#subscription-guid-update" title="Permalink to this heading">#</a></h3>
 <p>If the client doesn’t send a <code class="docutils literal notranslate"><span class="pre">guid</span></code> in the subscription payload, the server must create one immediately to ensure the following:</p>
@@ -410,15 +410,15 @@ XML</label><div class="sd-tab-content docutils">
 </ol>
 <div class="mermaid">
             flowchart TD
-   subgraph authority [For each empty GUID]
-      fetch(The server fetches the RSS feed and\nparses it) --&gt; rss_guid{Does the RSS field contain a GUID?}
-      rss_guid --&gt;|no| keep([The server keeps the generated GUID])
-      rss_guid --&gt;|yes| create(The server creates a new subscription\nentry with the new GUID)
-      create --&gt; update([The server updates the existing entry's\n&lt;code&gt;new_guid&lt;/code&gt; and &lt;code&gt;guid_changed&lt;/code&gt; fields])
-   end
-   subgraph initial [Initial server response]
-      payload([The server receives a payload with an empty guid field]) --&gt; generate(The server generates a new GUID and returns it)
-   end
+subgraph authority [For each empty GUID]
+fetch(The server fetches the RSS feed and\nparses it) --&gt; rss_guid{Does the RSS field contain a GUID?}
+rss_guid --&gt;|no| keep([The server keeps the generated GUID])
+rss_guid --&gt;|yes| create(The server creates a new subscription\nentry with the new GUID)
+create --&gt; update([The server updates the existing entry's\n&lt;code&gt;new_guid&lt;/code&gt; and &lt;code&gt;guid_changed&lt;/code&gt; fields])
+end
+subgraph initial [Initial server response]
+payload([The server receives a payload with an empty guid field]) --&gt; generate(The server generates a new GUID and returns it)
+end
         </div></section>
 </section>
 <section id="example-request">
@@ -482,32 +482,32 @@ XML</label><div class="sd-tab-content docutils">
 </input><label class="sd-tab-label" data-sync-id="tabcode-json" for="sd-tab-item-4">
 JSON</label><div class="sd-tab-content docutils">
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-<span class="w">  </span><span class="nt">&quot;success&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-<span class="w">    </span><span class="p">{</span>
-<span class="w">      </span><span class="nt">&quot;feed_url&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;https://example.com/rss1&quot;</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;guid&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;8d1f8f09-4f50-4327-9a63-639bfb1cbd98&quot;</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;is_subscribed&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;subscription_changed&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2023-02-23T14:00:00.000Z&quot;</span>
-<span class="w">    </span><span class="p">},</span>
-<span class="w">    </span><span class="p">{</span>
-<span class="w">      </span><span class="nt">&quot;feed_url&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;https://example.com/rss2&quot;</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;guid&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;968cb508-803c-493c-8ff2-9e397dadb83c&quot;</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;is_subscribed&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;subscription_changed&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2023-02-23T14:00:00.000Z&quot;</span>
-<span class="w">    </span><span class="p">},</span>
-<span class="w">    </span><span class="p">{</span>
-<span class="w">      </span><span class="nt">&quot;feed_url&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;https://example.com/rss3&quot;</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;guid&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;e672c1f4-230d-4ab4-99d3-390a9f835ec1&quot;</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;is_subscribed&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;subscription_changed&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2023-02-23T14:00:00.000Z&quot;</span>
-<span class="w">    </span><span class="p">}</span>
-<span class="w">  </span><span class="p">],</span>
-<span class="w">  </span><span class="nt">&quot;failure&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-<span class="w">    </span><span class="p">{</span>
-<span class="w">      </span><span class="nt">&quot;feed_url&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;example.com/rss4&quot;</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;No protocol present&quot;</span>
-<span class="w">    </span><span class="p">}</span>
-<span class="w">  </span><span class="p">]</span>
+<span class="w">   </span><span class="nt">&quot;success&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">      </span><span class="p">{</span>
+<span class="w">         </span><span class="nt">&quot;feed_url&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;https://example.com/rss1&quot;</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;guid&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;8d1f8f09-4f50-4327-9a63-639bfb1cbd98&quot;</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;is_subscribed&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;subscription_changed&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2023-02-23T14:00:00.000Z&quot;</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">      </span><span class="p">{</span>
+<span class="w">         </span><span class="nt">&quot;feed_url&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;https://example.com/rss2&quot;</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;guid&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;968cb508-803c-493c-8ff2-9e397dadb83c&quot;</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;is_subscribed&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;subscription_changed&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2023-02-23T14:00:00.000Z&quot;</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">      </span><span class="p">{</span>
+<span class="w">         </span><span class="nt">&quot;feed_url&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;https://example.com/rss3&quot;</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;guid&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;e672c1f4-230d-4ab4-99d3-390a9f835ec1&quot;</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;is_subscribed&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;subscription_changed&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2023-02-23T14:00:00.000Z&quot;</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">   </span><span class="p">],</span>
+<span class="w">   </span><span class="nt">&quot;failure&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">      </span><span class="p">{</span>
+<span class="w">         </span><span class="nt">&quot;feed_url&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;example.com/rss4&quot;</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;No protocol present&quot;</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">   </span><span class="p">]</span>
 <span class="p">}</span>
 </pre></div>
 </div>

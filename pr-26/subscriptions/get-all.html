@@ -299,6 +299,11 @@
 <td><p>No</p></td>
 <td><p>The new GUID associated with the podcast</p></td>
 </tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">deleted</span></code></p></td>
+<td><p>Datetime</p></td>
+<td><p>No</p></td>
+<td><p>The date on which the subscription was deleted. Only returned if the field is not <code class="docutils literal notranslate"><span class="pre">NULL</span></code></p></td>
+</tr>
 </tbody>
 </table>
 </div>
@@ -321,7 +326,7 @@
 <td><p>DateTime</p></td>
 <td><p>Query</p></td>
 <td><p>No</p></td>
-<td><p>The date from which the server should return objects. The server only returns entries whose <code class="docutils literal notranslate"><span class="pre">subscription_changed</span></code> or <code class="docutils literal notranslate"><span class="pre">guid_changed</span></code> fields are greater than this parameter. Expected in <a class="reference external" href="https://www.iso.org/iso-8601-date-and-time-format.html">ISO 8601 format</a></p></td>
+<td><p>The date from which the server should return objects. The server only returns entries whose <code class="docutils literal notranslate"><span class="pre">subscription_changed</span></code>, <code class="docutils literal notranslate"><span class="pre">guid_changed</span></code>, or <code class="docutils literal notranslate"><span class="pre">deleted</span></code> fields are greater than this parameter. Expected in <a class="reference external" href="https://www.iso.org/iso-8601-date-and-time-format.html">ISO 8601 format</a></p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">page</span></code></p></td>
 <td><p>Number</p></td>
@@ -353,14 +358,18 @@
 <p>This ensures the client has the most up-to-date entry for the subscription.</p>
 <div class="mermaid">
             flowchart TD
-   request([The client requests information about subscriptions]) --&gt; new_guid{Is the &lt;code&gt;new_guid&lt;/code&gt; field populated?}
-   subgraph process [For each subscription]
-      new_guid --&gt;|yes| follow(The server fetches the entry containing the\n new &lt;code&gt;guid&lt;/code&gt;  entry) --&gt; new_guid
-      new_guid --&gt;|no| return([The server returns the &lt;code&gt;guid&lt;/code&gt; entry from the\n&lt;code&gt;since&lt;/code&gt; date and adds the latest\nGUID in the &lt;code&gt;new_guid&lt;/code&gt; field])
-   end
-        </div><section id="resolution-example">
+request([The client requests information about subscriptions]) --&gt; new_guid{Is the &lt;code&gt;new_guid&lt;/code&gt; field populated?}
+subgraph process [For each subscription]
+new_guid --&gt;|yes| follow(The server fetches the entry containing the\n new &lt;code&gt;guid&lt;/code&gt; entry) --&gt; new_guid
+new_guid --&gt;|no| return([The server returns the &lt;code&gt;guid&lt;/code&gt; entry from the\n&lt;code&gt;since&lt;/code&gt; date and adds the latest\nGUID in the &lt;code&gt;new_guid&lt;/code&gt; field])
+end
+        </div></section>
+<section id="client-behavior">
+<h2>Client behavior<a class="headerlink" href="#client-behavior" title="Permalink to this heading">#</a></h2>
+<p>The client should update its local subscription data to match the information returned in the response. On receipt of a deleted subscription, the client should present the user with the option to remove their local data or <a class="reference internal" href="add-new.html"><span class="std std-doc">send their local data to the server</span></a> to reinstate the subscription details.</p>
+<section id="resolution-example">
 <h3>Resolution example<a class="headerlink" href="#resolution-example" title="Permalink to this heading">#</a></h3>
-<p>This example demonstrates how the server resolves a <code class="docutils literal notranslate"><span class="pre">new_guid</span></code> field for a subscription that has received three GUIDs.  Here is how the data is represented in the database:</p>
+<p>This example demonstrates how the server resolves a <code class="docutils literal notranslate"><span class="pre">new_guid</span></code> field for a subscription that has received three GUIDs. Here is how the data is represented in the database:</p>
 <div class="table-wrapper docutils container">
 <table class="docutils align-default">
 <thead>
@@ -673,7 +682,8 @@ XML</label><div class="sd-tab-content docutils">
             <ul>
 <li><a class="reference internal" href="#">Get all subscriptions</a><ul>
 <li><a class="reference internal" href="#parameters">Parameters</a></li>
-<li><a class="reference internal" href="#server-side-behavior">Server-side behavior</a><ul>
+<li><a class="reference internal" href="#server-side-behavior">Server-side behavior</a></li>
+<li><a class="reference internal" href="#client-behavior">Client behavior</a><ul>
 <li><a class="reference internal" href="#resolution-example">Resolution example</a><ul>
 <li><a class="reference internal" href="#scenario-1">Scenario 1</a></li>
 <li><a class="reference internal" href="#scenario-2">Scenario 2</a></li>

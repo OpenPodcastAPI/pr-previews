@@ -258,25 +258,25 @@
 <td><p>Yes</p></td>
 <td><p>The new GUID associated with the podcast</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">is_deleted</span></code></p></td>
-<td><p>Boolean</p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">deleted</span></code></p></td>
+<td><p>Datetime</p></td>
 <td><p>Yes</p></td>
-<td><p>Whether data associated with the subscription has been <a class="reference internal" href="delete.html"><span class="std std-doc">deleted</span></a> by the user. This field is used to determine whether a <code class="docutils literal notranslate"><span class="pre">410</span> <span class="pre">(Gone)</span></code> response should be returned</p></td>
+<td><p>The date on which data associated with the subscription was <a class="reference internal" href="delete.html"><span class="std std-doc">deleted</span></a> by the user. This field is used to determine whether a <code class="docutils literal notranslate"><span class="pre">410</span> <span class="pre">(Gone)</span></code> response should be returned</p></td>
 </tr>
 </tbody>
 </table>
 </div>
 <div class="mermaid">
-            classDiagram 
-   class subscription{
-         String feed_url
-         String guid
-         Boolean is_subscribed
-         Datetime subscription_changed
-         Datetime guid_changed
-         String new_guid
-         Boolean is_deleted
-      }
+            classDiagram
+class subscription{
+String feed_url
+String guid
+Boolean is_subscribed
+Datetime subscription_changed
+Datetime guid_changed
+String new_guid
+Datetime deleted
+}
         </div></section>
 <section id="api-endpoint">
 <h2>API endpoint<a class="headerlink" href="#api-endpoint" title="Permalink to this heading">#</a></h2>

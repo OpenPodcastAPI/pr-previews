@@ -286,20 +286,20 @@
 <p>If the client attempts to <a class="reference internal" href="get-single.html"><span class="std std-doc">fetch a deleted subscription</span></a>, the server must respond with a <code class="docutils literal notranslate"><span class="pre">410</span> <span class="pre">(Gone)</span></code> status code to indicate the object and its associated data have been deleted.</p>
 <div class="mermaid">
             sequenceDiagram
-   Client -&gt;&gt; Web server: DELETE request
-   Web server -&gt;&gt; Server: Forward request
-   Server --&gt;&gt; Web server: deletion_id
-   Web server --&gt;&gt; Client: 202 with deletion_id
-   par Server to Database
-      Server -&gt;&gt; Database: Cascade delete
-      Database -&gt;&gt; Server: Report status
-   end
-   Client -&gt;&gt; Web server: GET status
-   Web server -&gt;&gt; Server: Forward request
-   Server --&gt;&gt; Client: Deletion status
-   Client -&gt;&gt; Web server: GET deleted resource
-   Web server -&gt;&gt; Server: Forward request
-   Server --&gt; Client: 410 (Gone)
+Client -&gt;&gt; Web server: DELETE request
+Web server -&gt;&gt; Server: Forward request
+Server --&gt;&gt; Web server: deletion_id
+Web server --&gt;&gt; Client: 202 with deletion_id
+par Server to Database
+Server -&gt;&gt; Database: Cascade delete
+Database -&gt;&gt; Server: Report status
+end
+Client -&gt;&gt; Web server: GET status
+Web server -&gt;&gt; Server: Forward request
+Server --&gt;&gt; Client: Deletion status
+Client -&gt;&gt; Web server: GET deleted resource
+Web server -&gt;&gt; Server: Forward request
+Server --&gt; Client: 410 (Gone)
         </div></section>
 <section id="example-request">
 <h2>Example request<a class="headerlink" href="#example-request" title="Permalink to this heading">#</a></h2>
@@ -315,8 +315,8 @@
 </input><label class="sd-tab-label" data-sync-id="tabcode-json" for="sd-tab-item-0">
 JSON</label><div class="sd-tab-content docutils">
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-<span class="w">  </span><span class="nt">&quot;deletion_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">25</span><span class="p">,</span>
-<span class="w">  </span><span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Deletion request was received and will be processed&quot;</span>
+<span class="w">   </span><span class="nt">&quot;deletion_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">25</span><span class="p">,</span>
+<span class="w">   </span><span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Deletion request was received and will be processed&quot;</span>
 <span class="p">}</span>
 </pre></div>
 </div>
